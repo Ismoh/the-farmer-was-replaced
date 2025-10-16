@@ -18,39 +18,40 @@ grid = {}
 visited = set()
 found = 0
 
-def get_dependency_costs_for_need():
-	for entity in requirements['entities']:
+def get_dependency_costs_for_need(module):
+	costs_need = {}
+	for entity in module.requirements['entities']:
 		costs = get_cost(entity)
 		for itm in costs:
 			contingent = num_items(itm)
-			req_need = requirements['entities'][entity]
+			req_need = module.requirements['entities'][entity]
 			diff = contingent - req_need
 			if diff < 0:
-				costs[itm] = diff *- 1
+				costs_need[itm] = diff *- 1
 		if len(costs) == 0:
 			# if no costs for entity, entity amount is still required
-			costs[entity] = requirements['entities'][entity]
+			costs_need[entity] = module.requirements['entities'][entity]
 			
-	for itm in requirements['items']:
+	for itm in module.requirements['items']:
 		#contingent = num_items(itm)
 		#req_need = requirements['items'][itm]
 		#diff = contingent - req_need
 		#if diff < 0:
 		#	costs[itm] = diff *- 1
-		req_need = requirements['items'][itm]
-		costs[itm] = req_need
-	return costs
+		req_need = module.requirements['items'][itm]
+		costs_need[itm] = req_need
+	return costs_need
 	
 
-def are_costs_covered():
+def are_costs_covered(module):
 	cost = get_world_size() * 2**(num_unlocked(Unlocks.Mazes) - 1)
 	if num_items(Items.Weird_Substance) < cost:
 		#harvest_leftover(farm)
 		return False
 	return True
 
-def is_cost_need_reached():
-	return num_items(item) >= need
+def is_cost_need_reached(module):
+	return num_items(module.item) >= module.need
 
 
 def can_plant():
@@ -58,8 +59,8 @@ def can_plant():
 
 
 
-def plant_area(x, y, size, farm):
-	if not are_costs_covered():
+def try_to_plant(module):
+	if not are_costs_covered(module):
 		return
 	if can_plant():
 		create_maze()
@@ -140,94 +141,4 @@ def dfs():
 					
 def hunt_treasure():
 	while found < 300 and get_entity_type() == Entities.Hedge:
-		dfs()	
-					
-					
-					
-					
-					
-					
-				
-def create_maze_old(iteration):
-	visits = {(0,0)}
-	Movement.move_to(0,0)
-	
-	if get_entity_type() != Entities.Hedge:
-		plant(Entities.Bush)
-		itr = 0
-		
-		while not can_harvest():
-			pass
-		
-		if num_items(Items.Weird_Substance) == 0:
-			#trade(Items.Weird_Substance)
-			if num_items(Items.Weird_Substance) == 0:
-				return False #main()
-		substance = get_world_size() * 2**(num_unlocked(Unlocks.Mazes) - 1)
-		use_item(Items.Weird_Substance, substance)
-	
-	if num_drones() < max_drones():
-			spawn_drone(spawn_drone_treasure_hunt)
-	
-	while iteration <= 300:
-		iteration = treasure_hunt(directions[random() * len(directions) // 1], iteration, visits)
-	#create_maze(iteration)
-
-def spawn_drone_treasure_hunt():
-	iteration = 0
-	visits = {(0,0)}
-	while iteration <= 300:
-		iteration = treasure_hunt(directions[random() * len(directions) // 1], iteration, visits)
-			
-def treasure_hunt(dir, iteration, visits):
-#	x, y = measure()
-	x = get_pos_x()
-	y = get_pos_y()
-	while True:
-		if get_entity_type() != Entities.Hedge:
-			return 300
-		if x % 2:
-			dir = directions[random() * len(directions) // 1]
-		move(dir)
-		visits.add((x, y))
-				
-		x2 = get_pos_x()
-		y2 = get_pos_y()
-		
-		if x == x2 and y == y2:
-			if dir == West:
-				dir = North
-			elif dir == North:
-				dir = East
-			elif dir == East:
-				dir = South
-			elif dir == South:
-				dir = West
-		else:
-			x = get_pos_x()
-			y = get_pos_y()
-			
-			if dir == West:
-				dir = South
-			elif dir == North:
-				dir = West
-			elif dir == East:
-				dir = North
-			elif dir == South:
-				dir = East
-
-		# doesnt work with iterations
-		if iteration == 16:
-			return iteration
-		
-		if get_entity_type() == Entities.Treasure:
-			if iteration < 300:
-				if num_items(Items.Weird_Substance) < get_world_size() * 2**(num_unlocked(Unlocks.Mazes) - 1):
-					iteration = 300
-					return iteration
-				substance = get_world_size() * 2**(num_unlocked(Unlocks.Mazes) - 1)
-				use_item(Items.Weird_Substance, substance)
-				iteration += 1
-			else:
-				harvest()
-			return iteration
+		dfs()

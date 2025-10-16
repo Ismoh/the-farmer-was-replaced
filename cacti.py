@@ -1,13 +1,14 @@
 import Movement
 
-id = 4
+id = 7
 need = 0
-item = Items.Pumpkin
+item = Items.Cactus
+entities = [Entities.Cactus]
 
 
 def get_dependency_costs_for_need(module):
 	costs_need = {}
-	costs = get_cost(Entities.Pumpkin)
+	costs = get_cost(module.entities[0])
 	for itm in costs:
 		contingent = num_items(item)
 		diff = contingent - module.need
@@ -17,13 +18,11 @@ def get_dependency_costs_for_need(module):
 	
 
 def are_costs_covered_to_plant(module):
-	costs = get_cost(Entities.Pumpkin)
+	costs = get_cost(module.entities[0])
 	for itm in costs:
-		if not num_items(itm) > module.need * costs[itm] * 1.2:
-			harvest_leftover()
+		if not num_items(itm) > costs[itm]:
 			return False
 	return True
-	
 	
 def is_cost_need_reached(module):
 	return num_items(module.item) >= module.need
@@ -49,13 +48,5 @@ def try_to_plant(module):
 	if not are_costs_covered_to_plant(module):
 		return
 	if can_plant():
-		plant(Entities.Pumpkin)
-		while not can_harvest():
-			if get_water() < 1:
-				use_item(Items.Water)
-			if get_entity_type() == Entities.Dead_Pumpkin:
-				try_to_plant()
-			
-				
-def harvest_leftover():
-	clear(True)
+		plant(module.entities[0])
+		use_item(Items.Fertilizer) # ???

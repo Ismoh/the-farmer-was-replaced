@@ -1,28 +1,27 @@
 id = 3
-need = 500
+need = 0
 item = Items.Carrot
 entities = [Entities.Carrot]
 
-def get_dependency_costs_for_need():
-	costs = get_cost(entities[0])
+def get_dependency_costs_for_need(module):
+	costs_need = {}
+	costs = get_cost(module.entities[0])
 	for itm in costs:
-		contingent = num_items(item)
-		diff = contingent - need
+		contingent = num_items(itm)
+		diff = contingent - module.need
 		if diff < 0:
-			costs[itm] = diff *- 1
-		else:
-			return {}
-	return costs
+			costs_need[itm] = diff *- 1
+	return costs_need
 
-def are_costs_covered():
-	costs = get_cost(entities[0])
-	for item in costs:
-		if not num_items(item) > costs[item]:
+def are_costs_covered_to_plant(module):
+	costs = get_cost(module.entities[0])
+	for itm in costs:
+		if not num_items(itm) > costs[itm]:
 			return False
 	return True
 
-def is_cost_need_reached():
-	return num_items(item) >= need
+def is_cost_need_reached(module):
+	return num_items(module.item) >= module.need
 	
 def can_plant():
 	if get_entity_type() == Entities.Pumpkin:
@@ -39,8 +38,8 @@ def can_plant():
 		till()
 		return True
 
-def plant_area(x, y, size, farm):
-	if not are_costs_covered():
+def try_to_plant(module):
+	if not are_costs_covered_to_plant(module):
 		return
 	if can_plant():
-		plant(entities[0])
+		plant(module.entities[0])

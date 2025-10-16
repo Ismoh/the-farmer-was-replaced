@@ -3,18 +3,18 @@ need = 300
 item = Items.Hay
 entities = [Entities.Grass]
 
-def get_dependency_costs_for_need():
+def get_dependency_costs_for_need(module):
 	return {}
 	
-def are_costs_covered():
-	costs = get_cost(entities[0])
-	for item in costs:
-		if not num_items(item) > costs[item]:
+def are_costs_covered_to_plant(module):
+	costs = get_cost(module.entities[0])
+	for itm in costs:
+		if not num_items(itm) > costs[itm]:
 			return False
 	return True
 	
-def is_cost_need_reached():
-	return num_items(item) >= need
+def is_cost_need_reached(module):
+	return num_items(module.item) >= module.need
 	
 def can_plant():
 	if get_entity_type() == None:
@@ -28,8 +28,8 @@ def can_plant():
 		harvest()
 	return True
 
-def plant_area(x, y, size, farm):
-	if not are_costs_covered():
+def try_to_plant(module):
+	if not are_costs_covered_to_plant(module):
 		return
 	if can_plant():
-		plant(entities[0])
+		plant(module.entities[0])

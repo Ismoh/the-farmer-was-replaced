@@ -1,0 +1,11 @@
+{
+  "files.autoSaveDelay": 1000,
+  "files.autoSave": "afterDelay",
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.codeActionsOnSave": {
+      "source.organizeImports.ruff": "explicit"
+    },
+    "editor.formatOnSave": true
+  }
+}

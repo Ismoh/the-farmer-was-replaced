@@ -39,9 +39,11 @@ def are_costs_covered_to_plant(module):
 	return True
 
 def is_cost_need_reached(module):
-	return num_items(module.item) >= module.need
+	conti = num_items(module.item)
+	target = module.need
+	return conti >= target
 	
-def can_plant():
+def can_plant(module):
 	return True
 
 def try_to_plant(module):

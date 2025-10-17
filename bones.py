@@ -1,4 +1,4 @@
-import Movement
+import movement
 
 id = 8
 need = 0
@@ -52,10 +52,12 @@ def are_costs_covered(module):
 	return True
 
 def is_cost_need_reached(module):
-	return num_items(module.item) >= module.need
+	conti = num_items(module.item)
+	target = module.need
+	return conti >= target
 
 
-def can_plant():
+def can_plant(module):
 	return True
 
 
@@ -63,11 +65,11 @@ def can_plant():
 def try_to_plant(module):
 	if not are_costs_covered(module):
 		return
-	if can_plant():
+	if can_plant(module):
 		create_maze()
 
 def create_maze():
-	Movement.move_to(0,0)
+	movement.move_to(0,0)
 	
 	if get_entity_type() != Entities.Hedge:
 		plant(Entities.Bush)
@@ -152,7 +154,7 @@ def hunt_treasure():
 				
 def create_maze_old(iteration):
 	visits = {(0,0)}
-	Movement.move_to(0,0)
+	movement.move_to(0,0)
 	
 	if get_entity_type() != Entities.Hedge:
 		plant(Entities.Bush)

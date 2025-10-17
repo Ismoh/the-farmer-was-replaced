@@ -1,5 +1,3 @@
-import Movement
-
 id = 4
 need = 0
 item = Items.Pumpkin
@@ -26,10 +24,12 @@ def are_costs_covered_to_plant(module):
 	
 	
 def is_cost_need_reached(module):
-	return num_items(module.item) >= module.need
+	conti = num_items(module.item)
+	target = module.need
+	return conti >= target
 
 
-def can_plant():
+def can_plant(module):
 	if get_entity_type() == Entities.Pumpkin:
 		return False
 	if can_harvest():
@@ -48,7 +48,7 @@ def can_plant():
 def try_to_plant(module):
 	if not are_costs_covered_to_plant(module):
 		return
-	if can_plant():
+	if can_plant(module):
 		plant(Entities.Pumpkin)
 		while not can_harvest():
 			if get_water() < 1:

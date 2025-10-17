@@ -1,9 +1,10 @@
-id = 1
+id = 2
 need = 0
-item = Items.Hay
+item = Items.Wood
 requirements = {}
-requirements['entities'] = {Entities.Grass:1}
+requirements['entities'] = {Entities.Bush:1} #, Entities.Tree:1}
 requirements['items'] = {}
+
 
 def get_dependency_costs_for_need(module):
 	costs_need = {}
@@ -24,6 +25,7 @@ def get_dependency_costs_for_need(module):
 		costs_need[itm] = req_need * module.need
 	return costs_need
 
+
 def are_costs_covered_to_plant(module):
 	for entity in module.requirements['entities']:
 		costs = get_cost(entity)
@@ -31,12 +33,27 @@ def are_costs_covered_to_plant(module):
 			if not num_items(itm) > costs[itm]:
 				return False
 		return True
-	
+
+
 def is_cost_need_reached(module):
 	conti = num_items(module.item)
 	target = module.need
 	return conti >= target
-	
+
+
+def run(module):
+	for x in range(get_world_size()):
+		if module.is_cost_need_reached(module):
+			break
+		for y in range(get_world_size()):
+			if module.is_cost_need_reached(module):
+				break
+			movement.move_to(x,y)
+			module.try_to_plant(module)
+	if can_harvest():
+		harvest()
+
+
 def can_plant(module):
 	if get_entity_type() == None:
 		return True
@@ -48,6 +65,7 @@ def can_plant(module):
 	if can_harvest():
 		harvest()
 	return True
+
 
 def try_to_plant(module):
 	if not are_costs_covered_to_plant(module):

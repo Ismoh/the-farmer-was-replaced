@@ -53,6 +53,7 @@ class Items:
 class Hat:
     """A member of the Hats class"""
 
+
 class Hats:
     Brown_Hat: Hat
     """A brown hat."""
@@ -132,9 +133,11 @@ class Hats:
     Wood_Trophy_Hat: Hat
     """A wooden trophy hat."""
 
+
 # -------------------------------------------------------------------------------
 class Leaderboard:
     """A member of the Leaderboards class"""
+
 
 class Leaderboards:
     Cactus: Leaderboard
@@ -185,9 +188,11 @@ class Leaderboards:
     Wood_Single: Leaderboard
     """Farm 500 000 000 wood with a single drone on an 8x8 farm."""
 
+
 # -------------------------------------------------------------------------------
 class Entity:
     """A member of the Entities Class"""
+
 
 class Entities:
     Apple: Entity
@@ -520,6 +525,7 @@ def move(direction: Direction) -> bool:
     ```
     """
     ...
+
 
 # -------------------------------------------------------------------------------
 def can_move(direction: Direction) -> bool:
@@ -862,7 +868,9 @@ def num_items(item: Item) -> float:
 
 
 # -------------------------------------------------------------------------------
-def get_cost(thing: Entity | Item | Unlock, level: Optional[int] = None) -> Dict[Item, float] | None:
+def get_cost(
+    thing: Entity | Item | Unlock, level: Optional[int] = None
+) -> Dict[Item, float] | None:
     """
     Gets the cost of a `thing`
 
@@ -1005,7 +1013,14 @@ def leaderboard_run(leaderboard: Leaderboard, file_name: str, speedup: float) ->
 
 
 # -------------------------------------------------------------------------------
-def simulate(filename: str, sim_unlocks: Dict[Unlocks, float] | Iterable[Unlocks] | type[Unlocks], sim_items: Dict[Item, float], sim_globals: Dict[str, Any], seed: float, speedup: float) -> float:
+def simulate(
+    filename: str,
+    sim_unlocks: Dict[Unlocks, float] | Iterable[Unlocks] | type[Unlocks],
+    sim_items: Dict[Item, float],
+    sim_globals: Dict[str, Any],
+    seed: float,
+    speedup: float,
+) -> float:
     """
     Starts a simulation for the leaderboard using the specified `file_name` as a starting point.
 
@@ -1075,7 +1090,7 @@ def random() -> float:
 
 
 # -------------------------------------------------------------------------------
-def len(obj):
+def len(obj) -> int:
     """
     Returns the number of items in an object.
 
@@ -1093,7 +1108,7 @@ def len(obj):
 
 
 # -------------------------------------------------------------------------------
-def range(start, stop=None, step=1):
+def range(start, stop=None, step=1) -> list[int]:
     """
     Returns a sequence of numbers from start (inclusive) to stop (exclusive).
 
@@ -1255,6 +1270,7 @@ def wait_for(drone: Any) -> Any:
     """
     ...
 
+
 # -------------------------------------------------------------------------------
 def has_finished(drone: Any) -> Any:
     """
@@ -1274,6 +1290,7 @@ def has_finished(drone: Any) -> Any:
     """
     ...
 
+
 # -------------------------------------------------------------------------------
 def max_drones() -> int:
     """
@@ -1289,6 +1306,7 @@ def max_drones() -> int:
     ```
     """
     ...
+
 
 # -------------------------------------------------------------------------------
 def num_drones() -> int:

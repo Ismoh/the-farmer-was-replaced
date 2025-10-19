@@ -1,9 +1,6 @@
 id = 3
 need = 0
 item = Items.Carrot
-requirements = {}
-requirements['entities'] = {Entities.Carrot:1}
-requirements['items'] = {}
 
 def get_dependency_costs_for_need(module):
 	costs_need = {}
@@ -36,7 +33,8 @@ def is_cost_need_reached(module):
 	conti = num_items(module.item)
 	target = module.need
 	return conti >= target
-	
+
+
 def can_plant(module):
 	if get_entity_type() == Entities.Pumpkin:
 		return False
@@ -52,8 +50,17 @@ def can_plant(module):
 		till()
 		return True
 
+
 def try_to_plant(module):
 	if not are_costs_covered_to_plant(module):
 		return
 	if can_plant(module):
-		plant(list(module.requirements['entities'])[0])
+		plant(list(module.requirements["entities"])[0])
+
+
+def carrots_main():
+	print("carrots.main - not yet implemented")
+
+
+if __name__ == "__main__":
+	carrots_main()

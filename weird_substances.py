@@ -1,56 +1,69 @@
-id = 5
-need = 0
-item = Items.Weird_Substance
-requirements = {}
-requirements['entities'] = {Entities.Bush:1}
-requirements['items'] = {Items.Fertilizer:1}
+import movement
+import costs
 
-def get_dependency_costs_for_need(module):
-	for entity in module.requirements['entities']:
-		costs_need = {}
-		costs = get_cost(entity)
-		for itm in costs:
-			contingent = num_items(itm)
-			req_need = module.requirements['entities'][entity]
-			diff = contingent - module.need
-			if diff < 0:
-				costs_need[itm] = diff *- 1
-		if len(costs) == 0:
-			# if no costs for entity, entity amount is still required
-			costs_need[entity] = module.requirements['entities'][entity] * module.need
-			
-	for itm in module.requirements['items']:
-		#contingent = num_items(itm)
-		#req_need = requirements['items'][itm]
-		#diff = contingent - req_need
-		#if diff < 0:
-		#	costs[itm] = diff *- 1
-		req_need = module.requirements['items'][itm] * module.need
-		costs_need[itm] = req_need
-	return costs_need
-	
+id = 5
+req_need = 0
+requirements = {}
+item = Items.Weird_Substance
+
+
 def are_costs_covered_to_plant(module):
-	#if num_items(item) < need:
-	#	return False
-	#return True
-	for itm in module.requirements['items']:
+	# if num_items(item) < need:
+	# 	return False
+	# return True
+	for itm in module.requirements["items"]:
 		if num_items(itm) < module.need:
 			return False
 	return True
 
-def is_cost_need_reached(module):
-	conti = num_items(module.item)
-	target = module.need
-	return conti >= target
-	
-def can_plant(module):
-	return True
 
-def try_to_plant(module):
-	for entity in module.requirements['entities']:
-		plant(entity)
-	for itm in module.requirements['items']:
-		use_item(itm, module.requirements['items'][itm])
-	while not can_harvest():
-		pass
-	harvest()
+def try_to_plant():
+	global requirements
+	global item
+
+	if costs.is_cost_need_reached(item, requirements["need"]):
+		return
+
+	if costs.are_costs_covered_to_plant(requirements):
+		movement.move_to(0, 0)
+		for x in range(get_world_size()):
+			for y in range(get_world_size()):
+				movement.move_to(x, y)
+				for entity in requirements["entities"]:
+					plant(entity)
+				for itm in requirements["items"]:
+					use_item(itm, requirements["items"][itm])
+
+				if costs.is_cost_need_reached(item, requirements["need"]):
+					return
+
+
+def try_to_harvest():
+	movement.move_to(0, 0)
+	for x in range(get_world_size()):
+		for y in range(get_world_size()):
+			movement.move_to(x, y)
+			harvest()
+
+
+def set_need(req):
+	global requirements
+	global req_need
+
+	requirements = req
+	req_need = requirements["need"]
+
+
+def run():
+	if costs.is_cost_need_reached(item, requirements["need"]):
+		return
+	try_to_plant()
+	try_to_harvest()
+
+
+def weird_substances_main():
+	print("weird_substances.main - not yet implemented")
+
+
+if __name__ == "__main__":
+	weird_substances_main()

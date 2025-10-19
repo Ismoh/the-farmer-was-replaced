@@ -1,6 +1,7 @@
 id = 4
 need = 0
 item = Items.Pumpkin
+requirements = get_cost(Entities.Pumpkin)
 
 
 def get_dependency_costs_for_need(module):
@@ -10,9 +11,9 @@ def get_dependency_costs_for_need(module):
 		contingent = num_items(item)
 		diff = contingent - module.need
 		if diff < 0:
-			costs_need[itm] = diff *- 1
+			costs_need[itm] = diff * -1
 	return costs_need
-	
+
 
 def are_costs_covered_to_plant(module):
 	costs = get_cost(Entities.Pumpkin)
@@ -21,8 +22,8 @@ def are_costs_covered_to_plant(module):
 			harvest_leftover()
 			return False
 	return True
-	
-	
+
+
 def is_cost_need_reached(module):
 	conti = num_items(module.item)
 	target = module.need
@@ -55,7 +56,15 @@ def try_to_plant(module):
 				use_item(Items.Water)
 			if get_entity_type() == Entities.Dead_Pumpkin:
 				try_to_plant()
-			
-				
+
+
 def harvest_leftover():
 	clear(True)
+
+
+def pumpkins_main():
+	print("pumpkins.main - not yet implemented")
+
+
+if __name__ == "__main__":
+	pumpkins_main()

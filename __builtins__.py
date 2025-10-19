@@ -870,7 +870,7 @@ def num_items(item: Item) -> float:
 # -------------------------------------------------------------------------------
 def get_cost(
     thing: Entity | Item | Unlock, level: Optional[int] = None
-) -> Dict[Item, float] | None:
+) -> Dict[Item, float]:
     """
     Gets the cost of a `thing`
 

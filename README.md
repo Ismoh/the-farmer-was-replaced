@@ -25,19 +25,24 @@ TBC
 
 ### `carrots.py`
 
-KISS principle: Check costs, harvest costs beforehand if needed, plant and harvest.
+As well fully automated.\
+KISS: Check costs, harvest costs beforehand if needed, plant and harvest.\
+It unlocks any Carrot Unlock by itself.
 
 ### `hay.py`
 
-KISS principle: Plant and harvest.\
-No challenges implemented yet - Unlock locked.
+As well fully automated.\
+KISS: Check costs, harvest costs beforehand if needed, plant and harvest.\
+It unlocks any Hay Unlock by itself.
 > there's no plural of hay - (╯°□°)╯︵ ┻━┻
 
 ### `mazes.py`
 
-I used DFS algorithm with cache to max out gold crop by 300 maze runs in a row.
-
-> it's over 300 - ಠ‿↼
+I used DFS algorithm with cache to max out gold crop by 300 maze runs in a row.\
+Maximum of get_world_size() is split into smaller squares based on amout of drones.\
+As well fully automated.\
+KISS: Check costs, harvest costs beforehand if needed, plant and harvest.\
+It unlocks any Gold Unlock by itself.
 
 ### `movement.py`
 
@@ -55,11 +60,15 @@ Fetch all Unlocks and filter by costs and item weight. Take a look on the exampl
 
 ### `weird_substances.py`
 
-Currently KISS principle: Check costs, harvest costs beforehand if needed, plant and harvest.
+As well fully automated.\
+KISS: Check costs, harvest costs beforehand if needed, plant and harvest.\
+It would also unlock any possible Weird_Substance Unlock by itself, if there would be any.
 
 ### `woods.py`
 
-Currently KISS principle: Plant and harvest.
+As well fully automated.\
+KISS: Check costs, harvest costs beforehand if needed, plant and harvest.\
+It unlocks any Wood Unlock by itself.
 
 ## Usage
 

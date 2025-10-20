@@ -23,16 +23,13 @@ def get_max_drones_to_spawn():
 
 
 def are_costs_covered_to_plant(module):
-    # if num_items(item) < need:
-    # 	return False
-    # return True
     for itm in module.requirements["items"]:
         if num_items(itm) < module.need:
             return False
     return True
 
 
-def try_to_plant(drone_index):
+def try_to_plant_and_harvest(drone_index):
     global requirements
     global item
     global x_loop_step
@@ -47,29 +44,22 @@ def try_to_plant(drone_index):
                 return
             for y in range(get_world_size()):
                 movement.move_to(x, y)
+
+                if can_harvest():
+                    harvest()
+
                 for entity in requirements["entities"]:
                     if get_entity_type() != entity:
+                        if get_ground_type() != Grounds.Soil:
+                            till()
                         plant(entity)
                         continue
                 if not can_harvest():
                     for itm in requirements["items"]:
-                        # use_item(itm, requirements["items"][itm])
                         use_item(itm)
 
                 if costs.is_cost_need_reached(item, requirements["need"]):
                     return
-
-
-def try_to_harvest(drone_index):
-    global x_loop_step
-
-    for x in range(0, get_world_size(), x_loop_step):
-        x = x + drone_index
-        if x > get_world_size():
-            return
-        for y in range(get_world_size()):
-            movement.move_to(x, y)
-            harvest()
 
 
 def set_need(req):
@@ -85,7 +75,7 @@ def drone_run(drone_index):
     def drone():
         change_hat(Hats.Green_Hat)
         movement.move_to(drone_index, 0)
-        print(drone_index)
+        # print(drone_index)
         run(drone_index)
         return drone
 
@@ -93,19 +83,17 @@ def drone_run(drone_index):
 
 
 def run(drone_index):
-    try_to_plant(drone_index)
-    try_to_harvest(drone_index)
+    try_to_plant_and_harvest(drone_index)
 
 
 def main(reset_goal):
     global item
     global requirements
 
-    quick_print("Starting weird_substance farming..")
+    quick_print("Starting woods farming..")
     if reset_goal:
-        goal = unlocks.get_next_goal(Items.Weird_Substance)
+        goal = unlocks.get_next_goal(Items.Wood)
         if goal:
-            # goal = (Unlocks.Simulation, {Items.Gold: 5000})
             goal_name = goal[0]
             goal_costs = goal[1]
             req_need = goal[1][list(goal[1])[0]]
@@ -113,8 +101,16 @@ def main(reset_goal):
                 unlocks.try_unlock(goal[0])
                 return
         else:
-            goal_costs = {Items.Weird_Substance: 2000}
+            goal_costs = {Items.Wood: 100000}
         total_costs = costs.get_required_costs_by_goal(goal_costs)
+
+        if len(total_costs) == 0:
+            # print("No depending costs.")
+            req = {}
+            req["entities"] = {Entities.Bush: goal_costs[Items.Wood]}  # TODO: Add Trees!
+            req["items"] = {}
+            req["need"] = goal_costs[Items.Wood]
+            set_need(req)
 
         for tc in total_costs:
             for itm in tc:
@@ -134,8 +130,6 @@ def main(reset_goal):
                 continue
             d = drone_run(i)
         run(0)
-        if d != None:
-            wait_for(d)  # wait until all drones are done
 
 
 if __name__ == "__main__":

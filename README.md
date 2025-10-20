@@ -68,7 +68,8 @@ It would also unlock any possible Weird_Substance Unlock by itself, if there wou
 
 As well fully automated.\
 KISS: Check costs, harvest costs beforehand if needed, plant and harvest.\
-It unlocks any Wood Unlock by itself.
+It unlocks any Wood Unlock by itself.\
+`TODO: Need to add trees.`
 
 ## Usage
 

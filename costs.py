@@ -1,3 +1,5 @@
+from mazes import get_required_weird_substance_amount
+
 # Some cropped items like Gold need when planting additional items like weird_substance
 item_costs_map = {
 	Items.Bone: {
@@ -18,7 +20,7 @@ item_costs_map = {
 	},
 	Items.Gold: {
 		"entities": {Entities.Bush: 1},
-		"items": {Items.Weird_Substance: (get_world_size() * 2 ** (num_unlocked(Unlocks.Mazes) - 1)) / max_drones()},
+		"items": {Items.Weird_Substance: get_required_weird_substance_amount()},
 	},
 	Items.Hay: {
 		"entities": {Entities.Grass: 1},
@@ -40,6 +42,7 @@ item_costs_map = {
 
 entity_item_map = {
 	Entities.Bush: Items.Wood,
+	Entities.Apple: Items.Cactus,
 }
 
 # total_costs = {}
@@ -71,13 +74,12 @@ def get_required_costs(item, multiplier):
 			req_costs["entities"][entity] = item_costs_map[item]["entities"][entity] * multiplier
 
 	for itm in item_costs_map[item]["items"]:
-		# contingent = num_items(itm)
 		req_need = item_costs_map[item]["items"][itm]
-		# diff = contingent - req_need
-		# if diff < 0:
 		req_costs["items"][itm] = req_need * multiplier
 
-	if len(req_costs["entities"]) != 0 and len(req_costs["items"]) != 0:
+	if (
+		len(req_costs["entities"]) != 0 or len(req_costs["items"]) != 0
+	):  # if len(req_costs["entities"]) != 0 and len(req_costs["items"]) != 0:
 		req_costs["need"] = multiplier
 		total_costs.insert(0, {item: req_costs})
 
@@ -98,7 +100,21 @@ def get_required_costs_by_goal(goal_costs):
 	for item in goal_costs:
 		multiplier = goal_costs[item]
 		if item == Items.Gold:
-			multiplier = 1  # maze only a multiplier by 1
+			multiplier = (
+				(multiplier - num_items(Items.Gold))
+				/ (max_drones() / get_required_weird_substance_amount())
+				/ get_required_weird_substance_amount()
+			)
+			# (
+			# multiplier
+			# / (
+			# (get_required_weird_substance_amount() * get_required_weird_substance_amount())
+			# * max_drones()
+			# * (get_required_weird_substance_amount() * get_required_weird_substance_amount())
+			# / max_drones()
+			# )
+			# / get_required_weird_substance_amount()
+			# )  # maze only a multiplier by 1
 		return get_required_costs(item, multiplier)
 	return {}
 
@@ -120,6 +136,9 @@ def are_costs_covered_to_plant(requirements):
 			if not num_items(itm) > costs[itm]:
 				return False
 	for itm in requirements["items"]:
+		if itm == Items.Fertilizer:  # we cannot farm fertilizier, that's why it isn't a requirement
+			if num_items(itm) > 0:
+				return True
 		if not num_items(itm) > requirements["items"][itm]:
 			return False
 	return True

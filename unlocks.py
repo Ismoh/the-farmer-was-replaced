@@ -66,10 +66,7 @@ def filter_cheapest_unlocks(item_type=None):
 						if item_type != None and item_type != item:
 							continue
 						quick_print(str(costs))
-						if (
-							costs[item] <= cheapest_cost
-							and cost_order[item] <= cheapest_cost_order
-						):
+						if costs[item] <= cheapest_cost and cost_order[item] <= cheapest_cost_order:
 							cheapest_unlock = unl
 							cheapest_item = costs
 							cheapest_cost = costs[item]
@@ -83,6 +80,8 @@ def filter_cheapest_unlocks(item_type=None):
 								+ " "
 								+ str(cheapest_cost_order)
 							)
+	if not cheapest_unlock:
+		return None
 	return cheapest_unlock, cheapest_item
 
 
@@ -97,6 +96,8 @@ def is_cost_unlocked(costs):
 def try_unlock(unlo):
 	if unlock(unlo):
 		quick_print("---> YAY! " + str(unlo) + " unlocked!")
+		return True
+	return False
 
 
 def get_next_goal(item):

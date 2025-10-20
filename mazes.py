@@ -228,7 +228,7 @@ def mazes_main():
             else:
                 module = utils.get_module(itm)
                 module.set_need(req)
-                module.main(False)  # module.run()
+                module.main(False)
 
     drones = []
     while costs.are_costs_covered_to_plant(requirements) and not costs.is_cost_need_reached(item, requirements["need"]):

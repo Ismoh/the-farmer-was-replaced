@@ -163,9 +163,7 @@ def set_need(req):
 
 
 def get_required_weird_substance_amount():
-    smaller_square_start_pos = get_x_y_of_splitted_square_into_n(
-        get_world_size(), max_drones()
-    )  # not correct! https://chatgpt.com/c/68f55c0e-e108-8327-915d-4f509e337041
+    smaller_square_start_pos = get_x_y_of_splitted_square_into_n(get_world_size(), max_drones())
     amount = smaller_square_start_pos[1][0]
     return amount
 

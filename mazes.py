@@ -200,35 +200,37 @@ def run(drone_index):
     try_to_plant(drone_index)
 
 
-def mazes_main():
+def mazes_main(reset_goal, goal_costs):
     global item
     global requirements
 
     quick_print("Starting mazes challenge..")
-    goal = unlocks.get_next_goal(Items.Gold)
-    if goal:
-        # goal = (Unlocks.Simulation, {Items.Gold: 5000})
-        goal_name = goal[0]
-        goal_costs = goal[1]
-        req_need = goal[1][list(goal[1])[0]]
-        if costs.is_cost_need_reached(item, req_need):
-            if unlocks.try_unlock(goal[0]):
-                goal = None
-            return goal
-    else:
-        goal_costs = {Items.Gold: 100000}
-    total_costs = costs.get_required_costs_by_goal(goal_costs)
+    if reset_goal:
+        goal = unlocks.get_next_goal(Items.Gold)
+        if goal:
+            # goal = (Unlocks.Simulation, {Items.Gold: 5000})
+            goal_name = goal[0]
+            goal_costs = goal[1]
+            req_need = goal[1][list(goal[1])[0]]
+            if costs.is_cost_need_reached(item, req_need):
+                if unlocks.try_unlock(goal[0]):
+                    goal = None
+                return goal
+        else:
+            if not goal_costs:
+                goal_costs = {Items.Gold: 100000}
+        total_costs = costs.get_required_costs_by_goal(goal_costs)
 
-    for tc in total_costs:
-        for itm in tc:
-            req = tc[itm]
-            if itm == item:
-                req["need"] = goal[1][list(goal[1])[0]]  # only for mazes
-                set_need(req)
-            else:
-                module = utils.get_module(itm)
-                module.set_need(req)
-                module.main(False)
+        for tc in total_costs:
+            for itm in tc:
+                req = tc[itm]
+                if itm == item:
+                    req["need"] = goal[1][list(goal[1])[0]]  # only for mazes
+                    set_need(req)
+                else:
+                    module = utils.get_module(itm)
+                    module.set_need(req)
+                    module.main(False)
 
     drones = []
     while costs.are_costs_covered_to_plant(requirements) and not costs.is_cost_need_reached(item, requirements["need"]):
@@ -257,6 +259,6 @@ def mazes_main():
 
 if __name__ == "__main__":
     clear()
-    goal = mazes_main()
+    goal = mazes_main(False, None)
     while goal != None:
-        mazes_main()
+        mazes_main(False, None)

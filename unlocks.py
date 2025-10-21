@@ -19,7 +19,8 @@ def filter_cheapest_unlocks(item_type=None):
     cheapest_item = None
     cheapest_cost = 9999999999999999
     cheapest_cost_order = 9999999999999999
-    quick_print("not yet unlocked:")
+    if not item_type:
+        quick_print("---> not yet unlocked:")
     for unl in Unlocks:  # type: ignore
         if unl not in unlocks:
             unlocks[unl] = None
@@ -28,7 +29,8 @@ def filter_cheapest_unlocks(item_type=None):
             if len(costs) > 0:
                 if is_cost_unlocked(costs):
                     unlocks[unl] = costs
-                    quick_print(str(unl) + " -> " + str(unlocks[unl]))
+                    if not item_type:
+                        quick_print(str(unl) + " -> " + str(unlocks[unl]))
                     for item in costs:
                         if item_type != None and item_type != item:
                             continue
@@ -75,7 +77,7 @@ def get_next_goal(item):
 
 def main():
     print(str(filter_cheapest_unlocks()))
-    quick_print("next goal for item gold:")
+    quick_print("---> next goal for item gold:")
     print(str(get_next_goal(Items.Gold)))
 
 

@@ -56,6 +56,10 @@ def filter_cheapest_unlocks(item_type=None):
     return cheapest_unlock, cheapest_item
 
 
+def filter_by_unlock(unl):
+    return unl, get_cost(unl)
+
+
 def is_cost_unlocked(costs):
     for item in costs:
         unlocked = num_unlocked(item)
@@ -76,9 +80,11 @@ def get_next_goal(item):
 
 
 def main():
-    print(str(filter_cheapest_unlocks()))
+    quick_print(str(filter_cheapest_unlocks()))
     quick_print("---> next goal for item gold:")
-    print(str(get_next_goal(Items.Gold)))
+    quick_print(str(get_next_goal(Items.Gold)))
+    quick_print("---> filter by unlock name:")
+    quick_print(str(filter_by_unlock(Unlocks.Expand)))
 
 
 if __name__ == "__main__":

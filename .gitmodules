@@ -1,0 +1,3 @@
+[submodule "tfwrp"]
+	path = tfwrp
+	url = https://github.com/Ismoh/the-farmer-was-replaced-private.git

@@ -176,6 +176,8 @@ def drone_run(drone_index):
 
         # example: world 12x12, max_drones 4 -> 3x3 mazes per drone
         smaller_square_start_pos = get_x_y_of_splitted_square_into_n(get_world_size(), max_drones())
+        if drone_index >= len(smaller_square_start_pos):
+            return drone
         smallest_factor = smaller_square_start_pos[1][0]
         x = smaller_square_start_pos[drone_index][0]
         y = smaller_square_start_pos[drone_index][1]
@@ -189,7 +191,7 @@ def drone_run(drone_index):
         movement.move_to(x, y)
         change_hat(Hats.Green_Hat)
         utils.wait(100000000 * (max_drones() - drone_index))
-        print("Drone " + str(drone_index))
+        print(drone_index)
         run(drone_index)
         return drone
 
